@@ -120,9 +120,7 @@ namespace detail {
          _p2p_network->load_configuration(data_dir / "p2p");
          _p2p_network->set_node_delegate(this);
 
-         if( _options->count("seed-node") )
-         {
-            auto seeds = _options->at("seed-node").as<vector<string>>();
+         auto seedNodeOptionHandler = [](const vector<string>& seeds) {
             for( const string& endpoint_string : seeds )
             {
                std::vector<fc::ip::endpoint> endpoints = resolve_string_to_ip_endpoints(endpoint_string);
@@ -133,6 +131,22 @@ namespace detail {
                   _p2p_network->connect_to_endpoint(endpoint);
                }
             }
+         }
+
+         if( _options->count("seed-node") )
+         {
+            auto seeds = _options->at("seed-node").as<vector<string>>();
+            seedNodeOptionHandler(seeds);
+         }
+         else 
+         {
+            vector<string> seeds = {             
+                "116.62.153.32:9853", 
+                "47.104.184.54:9853", 
+                "139.224.133.135:9853", 
+                "47.98.99.113:9853"  
+            };
+            seedNodeOptionHandler(seeds);
          }
 
          if( _options->count("p2p-endpoint") )
