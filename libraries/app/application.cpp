@@ -131,7 +131,7 @@ namespace detail {
                   this->_p2p_network->connect_to_endpoint(endpoint);
                }
             }
-         }
+         };
 
          if( _options->count("seed-node") )
          {
