@@ -120,15 +120,15 @@ namespace detail {
          _p2p_network->load_configuration(data_dir / "p2p");
          _p2p_network->set_node_delegate(this);
 
-         auto seedNodeOptionHandler = [](const vector<string>& seeds) {
+         auto seedNodeOptionHandler = [this](const vector<string>& seeds) {
             for( const string& endpoint_string : seeds )
             {
-               std::vector<fc::ip::endpoint> endpoints = resolve_string_to_ip_endpoints(endpoint_string);
+               std::vector<fc::ip::endpoint> endpoints = this->resolve_string_to_ip_endpoints(endpoint_string);
                for (const fc::ip::endpoint& endpoint : endpoints)
                {
                   ilog("Adding seed node ${endpoint}", ("endpoint", endpoint));
-                  _p2p_network->add_node(endpoint);
-                  _p2p_network->connect_to_endpoint(endpoint);
+                  this->_p2p_network->add_node(endpoint);
+                  this->_p2p_network->connect_to_endpoint(endpoint);
                }
             }
          }
